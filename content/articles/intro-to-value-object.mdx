@@ -1,0 +1,86 @@
+---
+title: Intro to Value object
+description: Value Objects are a pattern used in enterprise application development to represent simple, immutable values that are used to model domain concepts. They are typically used to encapsulate data that is not an entity, but is important to the domain. A Value Object is defined by its value rather than its identity, meaning that two Value Objects with the same value are considered to be equal, regardless of their identity.
+date: "2022-05-16"
+repository: upstash/cli
+published: true
+tags: ["sci-fi", "gaming", "review"]
+---
+
+# Introduction to Value Objects
+
+### What Are Value Objects?
+
+A **Value Object** is an immutable data structure that represents a concept in the domain model. Unlike entities, Value Objects do not have a unique identity. Instead, they are identified solely by their attributes.
+
+### Why Use Value Objects?
+
+#### 1. Immutability
+
+Value Objects are immutable by design, preventing unintended changes and ensuring data consistency.
+
+#### 2. Equality by Value
+
+Two Value Objects with the same attributes are considered equal, regardless of their memory reference.
+
+#### 3. Encapsulation and Business Logic
+
+Value Objects encapsulate domain logic related to their attributes, leading to a cleaner domain model.
+
+---
+
+### Example in TypeScript (Node.js)
+
+#### Defining a Value Object
+
+```typescript
+class Money {
+    constructor(private amount: number, private currency: string) {
+        if (amount < 0) throw new Error("Amount cannot be negative");
+    }
+
+    equals(other: Money): boolean {
+        return this.amount === other.amount && this.currency === other.currency;
+    }
+}
+
+const price1 = new Money(100, "USD");
+const price2 = new Money(100, "USD");
+console.log(price1.equals(price2)); // true
+```
+
+✅ Benefits:
+
+- Ensures consistency in currency handling.
+- Prevents negative values through validation.
+
+---
+
+### Using Value Objects in a Domain Model
+
+```typescript
+class Product {
+    constructor(public name: string, public price: Money) {}
+}
+
+const product = new Product("Laptop", new Money(1200, "USD"));
+console.log(product);
+```
+
+✅ Benefits:
+
+- Improves readability and maintainability.
+- Encapsulates domain rules within the Money Value Object.
+
+---
+
+### When to Use Value Objects?
+
+- ✅ Representing attributes without identity
+- ✅ Handling small domain-specific concepts
+- ❌ Managing large, complex objects
+- ❌ Tracking unique objects over time
+
+### Conclusion
+
+Value Objects simplify domain models by encapsulating immutable, well-defined concepts. They help prevent bugs related to unintended modifications and provide a more robust domain design.

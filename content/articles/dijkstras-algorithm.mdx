@@ -1,0 +1,91 @@
+---
+title: Dijkstra’s Algorithm
+description: Dijkstra’s algorithm is a popular method used in computing and graph theory for finding the shortest paths between nodes in a graph. Named after Dutch computer scientist Edsger W. Dijkstra, this algorithm works by visiting vertices in the graph starting from the object’s starting point and gradually spreading out until the shortest path to the desired endpoint is known. This algorithm is applicable in such situation where all the edges are non-negative. Linear data structures such as stacks and queues are commonly used in the implementation of this algorithm. Although its worst-case time complexity appears to be high (O(|V|^2)), it runs significantly faster in practice.
+repository: chronark/chronark.com
+url: https://chronark.com
+date: 2024-03-28
+published: true
+tags: ["sci-fi", "gaming", "review"]
+---
+
+
+## Understanding Dijkstra’s Algorithm
+
+Dijkstra’s algorithm is a well-known method for finding the shortest path in a graph with non-negative edge weights. Named after Dutch computer scientist Edsger W. Dijkstra, it efficiently finds the shortest path between nodes in a weighted graph.
+
+---
+
+### How Dijkstra’s Algorithm Works
+
+1. **Initialize distances: Set the starting node’s distance to 0 and all others to Infinity.**.
+2. **Use a priority queue to always process the nearest unvisited node.**
+3. **Relax edges: For each neighbor of the current node, update its shortest known distance if a shorter path is found.**
+4. **Mark nodes as visited and repeat until all nodes are processed.**]
+
+Time Complexity: O(|V|²) with an adjacency matrix, or O((V + E) log V) with a priority queue.
+
+---
+
+### Dijkstra’s Algorithm Implementation in JavaScript
+
+Implementation Using Priority Queue
+
+```typescript
+class PriorityQueue {
+    constructor() {
+        this.queue = [];
+    }
+    enqueue(value, priority) {
+        this.queue.push({ value, priority });
+        this.queue.sort((a, b) => a.priority - b.priority);
+    }
+    dequeue() {
+        return this.queue.shift().value;
+    }
+    isEmpty() {
+        return this.queue.length === 0;
+    }
+}
+
+function dijkstra(graph, startNode) {
+    const distances = {};
+    const pq = new PriorityQueue();
+    for (let node in graph) {
+        distances[node] = Infinity;
+    }
+    distances[startNode] = 0;
+    pq.enqueue(startNode, 0);
+
+    while (!pq.isEmpty()) {
+        let currentNode = pq.dequeue();
+        for (let neighbor in graph[currentNode]) {
+            let newDist = distances[currentNode] + graph[currentNode][neighbor];
+            if (newDist < distances[neighbor]) {
+                distances[neighbor] = newDist;
+                pq.enqueue(neighbor, newDist);
+            }
+        }
+    }
+    return distances;
+}
+```
+
+#### Example Usage
+
+```typescript
+const graph = {
+    A: { B: 2, C: 4 },
+    B: { A: 2, C: 1, D: 7 },
+    C: { A: 4, B: 1, D: 3 },
+    D: { B: 7, C: 3 }
+};
+
+console.log(dijkstra(graph, 'A'));
+// Output: { A: 0, B: 2, C: 3, D: 6 }
+```
+
+### Key Takeaways
+
+- **Dijkstra’s Algorithm efficiently finds the shortest path in weighted graphs.**.
+- **It works best with non-negative weights.**
+- **Utilizes a priority queue for optimal performance.**

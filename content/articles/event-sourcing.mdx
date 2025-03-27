@@ -1,0 +1,115 @@
+---
+title: Event Sourcing
+description: Instead of storing just the current state of the data in a domain, use an append-only store to record the full series of actions taken on that data. The store acts as the system of record and can be used to materialize the domain objects. This can simplify tasks in complex domains, by avoiding the need to synchronize the data model and the business domain, while improving performance, scalability, and responsiveness. It can also provide consistency for transactional data, and maintain full audit trails and history that can enable compensating actions.
+date: "2023-12-01"
+url: https://planetfall.io
+published: true
+tags: ["event streams", "business domain", "scalability", "performance optimization", "transactional consistency"]
+---
+
+
+[![](/planetfall.png)](https://planetfall.io)
+
+### Understanding Event Sourcing
+
+Event Sourcing is a design pattern in which all changes to an application's state are stored as a sequence of events. Rather than storing only the current state of data, we persist every event that led to the state.
+
+Benefits of Event Sourcing
+
+- **Improved Auditability: Every change is recorded, allowing for a full history of modifications.**
+
+- **Scalability: Since it operates on an append-only model, event storage is highly scalable.**
+
+- **Event Replay: Past states can be reconstructed by replaying events.**
+
+CQRS Integration: Can be paired with Command Query Responsibility Segregation (CQRS) for improved performance.
+
+
+---
+
+
+### Implementing Event Sourcing in Node.js
+
+###### Step 1: Define an Event Store
+
+We need an event store to capture and persist all events. A simple implementation using a database like MongoDB or PostgreSQL can be done as follows:
+
+```typescript
+interface Event {
+    id: string;
+    type: string;
+    data: any;
+    timestamp: Date;
+}
+
+class EventStore {
+    private events: Event[] = [];
+
+    saveEvent(event: Event) {
+        this.events.push(event);
+    }
+
+    getEvents(): Event[] {
+        return this.events;
+    }
+}
+```
+
+### Step 2: Create Domain Events
+
+Each business operation should emit an event instead of modifying state directly.
+
+```typescript
+const eventStore = new EventStore();
+
+function createUser(name: string, email: string) {
+    const event: Event = {
+        id: crypto.randomUUID(),
+        type: "UserCreated",
+        data: { name, email },
+        timestamp: new Date()
+    };
+    eventStore.saveEvent(event);
+}
+```
+
+### Step 3: Rebuilding State from Events
+
+Instead of storing user data directly, reconstruct the state by replaying events.
+
+```typescript
+function getUserState(): Record<string, any> {
+    const state: Record<string, any> = {};
+    for (const event of eventStore.getEvents()) {
+        if (event.type === "UserCreated") {
+            state[event.data.email] = event.data;
+        }
+    }
+    return state;
+}
+```
+
+### Step 4: Handling Events with Event Listeners
+
+Using event listeners, you can trigger additional actions when an event occurs.
+
+```typescript
+class EventHandler {
+    static handle(event: Event) {
+        if (event.type === "UserCreated") {
+            console.log(`New user registered: ${event.data.name}`);
+        }
+    }
+}
+
+for (const event of eventStore.getEvents()) {
+    EventHandler.handle(event);
+}
+```
+
+---
+
+
+### Final Thoughts
+
+Event Sourcing is a powerful pattern that enables better auditability, scalability, and consistency in applications. By persisting events instead of mutable state, developers gain flexibility in debugging, data recovery, and analytics.

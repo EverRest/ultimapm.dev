@@ -1,0 +1,179 @@
+---
+title: Composition over Inheritance
+description: Composition over inheritance is a programming principle that suggests that it is better to use composition, a mechanism for assembling objects, to create complex objects, rather than using inheritance, which is a mechanism for creating new classes based on existing ones. Inheritance is a powerful mechanism for creating reusable code, but it can also lead to tightly coupled, hard-to-maintain code. This is because inherited classes are tightly bound to their parent classes and any changes made to the parent class will affect all of its child classes. This makes it hard to change or extend the code without affecting the entire class hierarchy.
+repository: upstash/web-analytics
+published: true
+date: "2025-03-21"
+tags: ["sci-fi", "gaming", "review"]
+---
+
+# Composition Over Inheritance
+
+### Introduction
+
+In software development, two fundamental approaches to structuring and reusing code are inheritance and composition. While inheritance allows one class to derive properties and behaviors from another, composition advocates assembling objects from smaller, reusable components. The principle of Composition Over Inheritance suggests that it is generally better to construct complex objects by composing smaller, independent behaviors rather than relying on deep class hierarchies.
+
+### Why Choose Composition Over Inheritance?
+
+###### 1. Reduces Tight Coupling
+
+Inheritance creates strong dependencies between parent and child classes. If a base class changes, it can inadvertently break all its subclasses. Composition, on the other hand, keeps components loosely coupled, making the system more flexible and easier to maintain.
+
+###### 2. Encourages Code Reusability and Flexibility
+
+Composition allows developers to mix and match behaviors across different objects without enforcing rigid hierarchical structures. This makes it easier to share functionality across unrelated objects.
+
+###### 3. Avoids the Fragile Base Class Problem
+
+When a base class changes, all derived classes must be tested to ensure they still function correctly. This problem grows as hierarchies become deeper.
+
+###### 4. Enables Better Testing and Mocking
+
+With composition, dependencies are injected rather than inherited, making unit testing easier since individual behaviors can be mocked and tested in isolation.
+
+### Use Cases and Examples in Node.js/TypeScript
+
+###### Example 1: Inheritance-Based Approach (Problematic)
+
+```typescript
+class Animal {
+    move() {
+        console.log("Moving...");
+    }
+}
+
+class Bird extends Animal {
+    fly() {
+        console.log("Flying...");
+    }
+}
+
+class Penguin extends Bird {
+    fly() {
+        throw new Error("Penguins cannot fly!");
+    }
+}
+
+const penguin = new Penguin();
+penguin.move(); // Works fine
+penguin.fly(); // Throws an error
+```
+
+Issue: Inheritance forces Penguin to inherit fly(), even though it cannot fly, leading to a design flaw.
+
+---
+
+###### Example 2: Composition-Based Approach (Better Design)
+
+```typescript
+class Mover {
+    move() {
+        console.log("Moving...");
+    }
+}
+
+class Flyer {
+    fly() {
+        console.log("Flying...");
+    }
+}
+
+class Penguin {
+    private mover = new Mover();
+
+    move() {
+        this.mover.move();
+    }
+}
+
+const penguin = new Penguin();
+penguin.move(); // Works fine
+```
+
+✅ Benefits:
+
+- The Penguin class does not inherit unnecessary behavior.
+
+- Behaviors can be composed dynamically, reducing unnecessary dependencies.
+
+---
+
+###### Example 3: Real-World Use Case - Logging with Composition
+
+Instead of using inheritance for a logger class, we can inject a logging service dynamically:
+
+```typescript
+class ConsoleLogger {
+    log(message: string) {
+        console.log(message);
+    }
+}
+
+class FileLogger {
+    log(message: string) {
+        // Logic to write to a file
+        console.log(`Writing to file: ${message}`);
+    }
+}
+
+class Application {
+    constructor(private logger: { log: (msg: string) => void }) {}
+
+    run() {
+        this.logger.log("Application started!");
+    }
+}
+
+const app = new Application(new ConsoleLogger());
+app.run(); // Logs to console
+
+const fileApp = new Application(new FileLogger());
+fileApp.run(); // Writes to file
+```
+
+✅ Benefits:
+
+- Easily switch between different logging implementations.
+
+- No rigid inheritance structure, making the system adaptable.
+
+#### When to Use Inheritance vs. Composition
+
+Scenario
+
+Use Inheritance (UI)
+Use Composition (UC)
+
+Objects have an is-a relationship:
+
+✅ Yes (UI)
+❌ No (UC)
+
+Objects have a has-a relationship:
+
+❌ No (UI)
+✅ Yes (UC)
+
+Need to share behavior across unrelated classes:
+
+❌ No (UI)
+✅ Yes (UC)
+
+Behavior should be interchangeable or configurable at runtime:
+
+❌ No (UI)
+✅ Yes (UC)
+
+Deep class hierarchies required:
+
+✅ Yes (UI)
+❌ No (UC)
+
+### Conclusion
+
+While inheritance is a powerful tool, it can lead to tightly coupled and rigid designs. Composition offers a more flexible and maintainable approach by allowing behaviors to be shared dynamically without enforcing unnecessary dependencies. By following the principle of Composition Over Inheritance, developers can create more adaptable, reusable, and testable code structures in Node.js and TypeScript.
+
+
+
+
+

@@ -1,0 +1,107 @@
+---
+title: SSL vs TLS
+description: Secure Sockets Layer (SSL) and Transport Layer Security (TLS) are cryptographic protocols used to provide security in internet communications. These protocols encrypt the data that is transmitted over the web, so anyone who tries to intercept packets will not be able to interpret the data. One difference that is important to know is that SSL is now deprecated due to security flaws, and most modern web browsers no longer support it. But TLS is still secure and widely supported, so preferably use TLS.
+date: "2021-03-16"
+repository: chronark/terraform-provider-vercel
+url: https://registry.terraform.io/providers/chronark/vercel/latest
+published: true
+tags: ["sci-fi", "gaming", "review"]
+---
+
+# Understanding SSL and TLS: Ensuring Secure Internet Communication
+
+### Introduction
+
+Secure Sockets Layer (SSL) and Transport Layer Security (TLS) are cryptographic protocols designed to provide secure communication over the internet. They protect sensitive data by encrypting communication between devices, preventing eavesdropping, tampering, and data theft. While SSL was once the standard for online security, it has been deprecated due to vulnerabilities, and TLS is now the preferred protocol for secure communications.
+
+---
+
+### What Are SSL and TLS?
+
+##### Secure Sockets Layer (SSL)
+
+SSL was the first widely adopted protocol for encrypting internet communications. It established secure connections for web browsing, email, and online transactions. However, SSL versions **1.0**, **2.0**, and **3.0** were found to have critical security flaws, leading to their deprecation.
+
+##### Transport Layer Security (TLS)
+
+TLS is the successor to SSL, providing stronger encryption and security mechanisms. It has undergone multiple versions:
+
+- **TLS 1.0 (1999)** – Based on SSL 3.0, but with better encryption algorithms.
+
+- **TLS 1.1 (2006)** – Improved security against attacks like CBC (Cipher Block Chaining) vulnerabilities.
+
+- **TLS 1.2 (2008)** – Stronger cryptographic algorithms and enhanced security mechanisms.
+
+- **TLS 1.3 (2018)** – Removes outdated features, improves handshake speed, and enhances security.
+
+🚀 **TLS 1.2 and TLS 1.3** are currently the most widely used versions, with TLS 1.3 offering the best security and performance.
+
+---
+
+### How SSL/TLS Works
+
+SSL/TLS ensures secure communication through encryption and authentication. The process follows these steps:
+
+###### 1. Handshake Process
+
+When a client (browser) connects to a server (website):
+
+1. The client sends a "Hello" message with supported encryption methods.
+2. The server responds with its SSL/TLS certificate and chosen encryption method.
+3. The client verifies the certificate authenticity.
+4. Both parties generate session keys for encryption.
+5. A secure, encrypted connection is established.
+
+###### 2. Encryption
+
+Once the handshake is complete, data is transmitted securely using symmetric encryption (AES, ChaCha20) to protect confidentiality.
+
+###### 3. Authentication
+
+SSL/TLS certificates validate the identity of a website, preventing impersonation attacks (MITM - Man-In-The-Middle attacks).
+
+---
+
+### Why TLS is Preferred Over SSL
+
+🔒 Key Takeaway: Always use TLS (preferably TLS 1.3) for securing web communications.
+
+---
+
+### Use Cases of SSL/TLS
+
+🔹 Web Browsing – Secure HTTPS connections protect user data (e.g., banking, e-commerce).
+🔹 Email Security – Encrypts emails (SMTP, IMAP, POP3 with TLS).
+🔹 VoIP & Messaging – Secures voice/video calls and instant messaging.
+🔹 APIs & Web Services – Protects data exchanges between applications.
+
+---
+
+### How to Implement SSL/TLS in Node.js (Example)
+
+```typescript
+import https from 'https';
+import fs from 'fs';
+
+const options = {
+  key: fs.readFileSync('server-key.pem'),
+  cert: fs.readFileSync('server-cert.pem')
+};
+
+https.createServer(options, (req, res) => {
+  res.writeHead(200);
+  res.end("Hello, secure world!");
+}).listen(443, () => {
+  console.log('Server running on https://localhost:443');
+});
+```
+
+☝️ This example sets up an HTTPS server using an SSL/TLS certificate.
+
+---
+
+### Conclusion
+
+SSL and TLS are essential for securing internet communications, ensuring data integrity, confidentiality, and authentication. Since SSL is outdated, TLS (especially **TLS 1.2+*) should be used to maintain a secure online environment. Implementing TLS enhances security for websites, applications, and APIs, protecting users from cyber threats.
+
+🔐 **Upgrade to TLS today and ensure your digital communications remain secure!** 🚀

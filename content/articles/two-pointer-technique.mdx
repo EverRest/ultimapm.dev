@@ -1,0 +1,126 @@
+---
+title: Two Pointer Technique
+description: The two-pointer technique is a strategy that can be used to solve certain types of problems, particularly those that involve arrays or linked lists. This technique primarily involves using two pointers, which navigate through the data structure in various ways, depending on the nature of the problem. The pointers could traverse the array from opposite ends, or one could be moving faster than the other - often referred to as the slow and fast pointer method. This technique can greatly optimize performance by reducing time complexity, often enabling solutions to achieve O(n) time complexity.
+date: "2023-05-01"
+url: https://highstorm.app
+published: true
+repository: "chronark/highstorm"
+tags: ["algorithm", "patterns"]
+---
+
+ [![](https://highstorm.app/og.png)](https://highstorm.app)
+
+## Understanding the Two Pointer Technique
+The Two Pointer Technique is a fundamental algorithmic strategy used to optimize solutions for problems involving arrays, linked lists, or strings. By maintaining two distinct pointers that traverse a data structure in a strategic manner, we can often achieve more efficient solutions compared to brute-force approaches.
+
+---
+
+## How It Works
+The technique typically employs two pointers that move according to the problem’s constraints:
+
+- **Opposite Ends** (Bidirectional Pointers)
+
+Used when working with sorted arrays or problems involving pairs.
+
+One pointer starts from the beginning (left), and the other starts from the end (right).
+
+Both move towards each other based on certain conditions.
+
+- **Slow and Fast Pointers**
+
+Often used in linked lists to detect cycles or find the middle node.
+
+One pointer moves one step at a time (slow), while the other moves two steps at a time (fast).
+
+- **Sliding Window Technique**
+
+A variation where one pointer moves dynamically based on constraints.
+
+Useful in problems involving substrings, subarrays, or frequency-based challenges.
+
+---
+
+
+## Customizable Settings
+
+Customize your alert settings to suit your unique needs
+
+## Advantages of the Two Pointer Technique
+
+- **Optimized Time Complexity: Reduces problems from O(n^2) to O(n) in many cases.**
+
+- **Lower Space Complexity: Works in-place without additional data structures.**
+
+- **Easy to Implement: Often simpler than using hash tables or recursion.**
+
+---
+
+## When to Use the Two Pointer Technique
+
+- **Problems involving sorted arrays or lists where bidirectional traversal is beneficial.**
+
+- **Linked list cycle detection, finding the middle element, or rearranging lists.**
+
+- **Substring or subarray problems where a sliding window approach is effective.**
+
+## Example 1: Finding a Pair That Sums to a Target
+
+```typescript
+function twoSumSorted(arr: number[], target: number): number[] {
+    let left = 0, right = arr.length - 1;
+    while (left < right) {
+        const sum = arr[left] + arr[right];
+        if (sum === target) return [left, right];
+        if (sum < target) left++;
+        else right--;
+    }
+    return [];
+}
+```
+
+---
+
+##### Use Case: This is particularly useful when dealing with sorted arrays, allowing for an O(n) solution instead of O(n^2).
+
+
+---
+
+
+## Example 2: Detecting a Cycle in a Linked List (Floyd’s Cycle Detection)
+
+```typescript
+class ListNode {
+    val: number;
+    next: ListNode | null;
+    constructor(val?: number, next?: ListNode | null) {
+        this.val = val ?? 0;
+        this.next = next ?? null;
+    }
+}
+function hasCycle(head: ListNode | null): boolean {
+    let slow = head, fast = head;
+    while (fast && fast.next) {
+        slow = slow.next!;
+        fast = fast.next.next!;
+        if (slow === fast) return true;
+    }
+    return false;
+}
+```
+
+---
+
+##### Use Case: This method efficiently detects cycles in O(n) time with O(1) space.
+
+### When to Use the Two Pointer Technique
+
+- **Problems involving sorted arrays or lists where bidirectional traversal is beneficial.**
+
+- **Linked list cycle detection, finding the middle element, or rearranging lists.**
+
+- **Substring or subarray problems where a sliding window approach is effective.**
+
+---
+
+## Final Thoughts
+The Two Pointer Technique is an essential tool in algorithmic problem-solving. Mastering it can help optimize solutions for a wide range of coding interview questions and competitive programming challenges.

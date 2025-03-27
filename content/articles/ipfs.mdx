@@ -1,0 +1,153 @@
+---
+title: How IPFS works
+description: "The InterPlanetary File System (IPFS) is a peer-to-peer distributed file system designed to make the web more decentralized, efficient, and resilient. Unlike traditional web systems that rely on centralized servers and location-based addressing, IPFS enables users to store and retrieve data using content-addressing, where files are identified by their cryptographic hash rather than their storage location. This approach enhances data integrity, reduces reliance on single points of failure, and improves efficiency by allowing multiple nodes to serve the same content. IPFS provides a powerful foundation for a variety of use cases, from decentralized web hosting to blockchain integration, secure file sharing, and censorship-resistant applications. Its distributed nature makes it an ideal solution for applications requiring high availability, immutability, and redundancy."
+date: "2023-02-05"
+url: https://upstash.com
+repository: upstash/react-ui
+published: true
+tags: ["IPFS", "Web3", "Decentralized Storage", "DApps", "Peer-to-Peer", "Libp2p", "Merkle DAG", "Bitswap", Fleek", "NFT.Storage", "Decentralization"]
+---
+
+# Introduction to IPFS (InterPlanetary File System)
+
+The **InterPlanetary File System (IPFS)** is a peer-to-peer distributed file system designed to make the web more decentralized and resilient. It allows users to store and share data in a content-addressed manner, meaning files are identified by their cryptographic hash rather than their location.
+
+This guide will explore the core subsystems of IPFS, demonstrate how to use IPFS in **Node.js**, and discuss various IPFS providers available for deploying production applications.
+
+---
+
+## Core Subsystems of IPFS
+
+IPFS consists of several key subsystems that enable its decentralized functionality:
+
+#### 1. Content Addressing & CID (Content Identifier)
+
+Instead of traditional URLs, IPFS uses **Content Identifiers (CIDs)**, which are hashes derived from file content. This ensures that any change to a file results in a new CID.
+
+#### 2. DAG (Directed Acyclic Graph) & Merkle Trees
+
+IPFS organizes files in a **Merkle DAG**, which allows efficient versioning, deduplication, and integrity verification.
+
+#### 3. Distributed Hash Table (DHT)
+
+The **DHT** enables peers to locate content across the IPFS network by mapping CIDs to their respective storage locations.
+
+#### 4. Bitswap (Data Exchange Protocol)
+
+This protocol is responsible for requesting and transferring content between peers in the network. It optimizes data retrieval by fetching parts of files from multiple sources simultaneously.
+
+#### 5. Libp2p (Peer-to-Peer Networking)
+
+IPFS uses **Libp2p** for handling peer discovery, transport encryption, and communication across the decentralized network.
+
+#### 6. File System Abstraction
+
+IPFS provides a Unix-like file system abstraction, allowing users to add, retrieve, and navigate files seamlessly.
+
+---
+
+## Using IPFS with Node.js
+
+To work with IPFS in Node.js, you can use the **js-ipfs** library. Below are common use cases.
+
+#### 1. Installing IPFS in Node.js
+
+```bash
+npm install ipfs-core
+```
+
+#### 2. Creating an IPFS Node
+
+```typescript
+const IPFS = require('ipfs-core');
+
+(async () => {
+    const node = await IPFS.create();
+    console.log('IPFS Node Started');
+})();
+```
+
+#### 3. Adding a File to IPFS
+
+```typescript
+(async () => {
+    const node = await IPFS.create();
+    const { cid } = await node.add('Hello, IPFS!');
+    console.log('File added with CID:', cid.toString());
+})();
+```
+
+#### 4. Retrieving a File from IPFS
+
+```typescript
+(async () => {
+    const node = await IPFS.create();
+    const stream = node.cat('YOUR_CID_HERE');
+    let data = '';
+    for await (const chunk of stream) {
+        data += chunk.toString();
+    }
+    console.log('File content:', data);
+})();
+```
+
+### 5. Connecting to an IPFS Gateway
+
+```typescript
+const fetch = require('node-fetch');
+
+(async () => {
+    const cid = 'YOUR_CID_HERE';
+    const url = `https://ipfs.io/ipfs/${cid}`;
+    const response = await fetch(url);
+    const text = await response.text();
+    console.log('Fetched content:', text);
+})();
+```
+
+---
+
+## IPFS Providers & Hosting Solutions
+
+While running a local IPFS node works well for development, production applications may require robust storage and availability solutions. Here are some popular IPFS providers:
+
+### 1. Infura (IPFS API & Gateway)
+
+- **Pros:** Free tier, scalable, high availability.
+- **Cons:** Limited rate limits, centralized access.
+- **Website:** https://infura.io
+
+### 2. Pinata (IPFS Pinning Service)
+
+- **Pros:** Developer-friendly API, easy-to-use dashboard.
+- **Cons:** Paid plans for high storage.
+- **Website:** https://pinata.cloud
+
+### 3. Web3.Storage (Powered by Filecoin)
+
+- **Pros:** Free storage (up to 1TB), decentralized by default.
+- **Cons:** Limited customer support.
+- **Website:** https://web3.storage
+
+### 4. NFT.Storage (Best for NFTs)
+
+- **Pros:** Free for NFTs, ensures data permanence.
+- **Cons:** Geared towards NFT use cases only.
+- **Website:** https://nft.storage
+
+### 5. Fleek (IPFS Hosting & Deployment)
+
+- **Pros:** Web3-native, supports decentralized hosting.
+- **Cons:** Learning curve for non-technical users.
+- **Website:** https://fleek.co
+
+---
+
+# Conclusion
+
+IPFS is a powerful decentralized storage protocol that enhances the way data is shared and stored on the web. By leveraging **Node.js**, developers can easily integrate IPFS into their applications for peer-to-peer file sharing, decentralized web hosting, and Web3 projects.
+
+For production-ready solutions, providers like **Infura**, **Pinata**, **Web3.Storage**, **NFT.Storage**, and **Fleek** offer scalable ways to store and retrieve data from IPFS.
+
+
+

@@ -1,0 +1,92 @@
+---
+title: Hollywood Principle
+description: The Hollywood Principle ("Don't call us, we'll call you") is a software design pattern that promotes inversion of control (IoC). It is widely used in frameworks, event-driven systems, and dependency injection to create modular, maintainable, and scalable applications. By letting external frameworks handle execution flow, this principle enhances flexibility while reducing direct dependencies.
+date: "2023-07-01"
+url: https://unkey.dev
+published: true
+repository: chronark/unkey
+tags: ["software design", "inversion of control", "event-driven architecture", "Node.js", "frameworks", "dependency injection"]
+---
+
+# Hollywood Principle: "Don't Call Us, We'll Call You"
+
+### Introduction
+
+The Hollywood Principle is a software design concept that promotes **inversion of control** (IoC) by allowing higher-level components to control the flow of a program instead of lower-level components explicitly calling them. This principle is commonly used in frameworks, event-driven architectures, and dependency injection to create flexible and maintainable systems.
+
+---
+
+# Understanding the Hollywood Principle
+
+The phrase **"Don't call us, we'll call you"** embodies the Hollywood Principle. Instead of a class or function directly invoking another, it allows a framework or higher-level component to determine when and how calls are made.
+
+🔹 **Key Idea:** Instead of writing code that directly controls execution flow, developers define behavior and allow external systems (such as frameworks) to trigger it when needed.
+
+### Example Use Cases
+
+- **Event-driven architectures** (React hooks, Node.js event loop)
+- **Frameworks & Dependency Injection** (NestJS, Spring, Angular)
+- **Plugin systems** (Middleware in Express.js)
+
+---
+
+# Pros & Cons of the Hollywood Principle
+
+✅ Pros
+
+✔ **Loose Coupling** – Reduces dependencies between components, making the system more modular and scalable.
+✔ **Improved Maintainability** – Easier to modify and extend without breaking the system.
+✔ **Better Code Organization** – Encourages separation of concerns by delegating control.
+✔ **Reusability** – Components can be reused across different contexts without modification.
+
+❌ Cons
+
+✖ **Learning Curve** – Understanding IoC and event-driven paradigms can be challenging.
+✖ **Debugging Complexity** – Since execution is controlled externally, tracking function calls can be difficult.
+✖ **Potential Performance Overhead** – Overuse of abstractions can introduce unnecessary processing.
+
+# Example: Implementing the Hollywood Principle in Node.js
+
+### Using Event Emitters
+
+One of the best examples of the Hollywood Principle in Node.js is the ```EventEmitter``` module, which allows us to register event listeners instead of directly invoking functions.
+
+```typescript
+const EventEmitter = require('events');
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter();
+
+// Register an event listener (Hollywood Principle: "Don't call us, we'll call you")
+myEmitter.on('dataReceived', (data) => {
+  console.log(`Data received: ${data}`);
+});
+
+// Emit an event, triggering the callback
+myEmitter.emit('dataReceived', 'Hello, Hollywood!');
+```
+
+📌 **Key Takeaway:** Instead of calling the function directly, we define behavior in an event listener, and the event system triggers it when necessary.
+
+### Using Dependency Injection in NestJS
+
+NestJS follows the Hollywood Principle using Dependency Injection.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+class UserService {
+  getUsers() {
+    return ['Alice', 'Bob', 'Charlie'];
+  }
+}
+
+// The framework calls this service when needed, instead of us manually invoking it.
+```
+
+### Conclusion
+
+The **Hollywood Principle** enables flexible and maintainable code by inverting control, letting frameworks and event-driven mechanisms dictate execution flow. While it offers modularity and improved organization, it requires careful design to avoid complexity and performance bottlenecks.
+
+🚀 Key Takeaway: Use the Hollywood Principle to build scalable, loosely coupled applications, especially in event-driven systems and dependency injection frameworks!
+

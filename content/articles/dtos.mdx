@@ -1,0 +1,178 @@
+---
+title: Data Transfer Object pattern and Mappers
+description: The Data Transfer Object Design Pattern is one of the enterprise application architecture patterns that calls for the use of objects that aggregate and encapsulate data for transfer. A Data Transfer Object is, essentially, like a data structure. It should not contain any business logic but should contain serialization and deserialization mechanisms.
+repository: chronark/zod-bird
+date: "2023-05-21"
+published: true
+tags: ["sci-fi", "gaming", "review"]
+---
+
+## Data Transfer Object Pattern and Mappers
+
+#### Introduction
+
+The **Data Transfer Object (DTO)** Pattern is a software design pattern used to transfer data between different parts of an application while maintaining separation of concerns. DTOs serve as lightweight containers for structured data, typically without business logic, and are particularly useful in distributed systems, microservices, and APIs.
+
+#### Why Use DTOs?
+
+###### 1. Separation of Concerns
+
+DTOs act as intermediaries between the business logic and the presentation layer, keeping models clean from unnecessary dependencies.
+
+###### 2. Improved Performance
+
+By defining specific data structures, DTOs help optimize data transfer, reducing unnecessary fields and payload size.
+
+###### 3. Type Safety and Validation
+
+Using DTOs in TypeScript ensures that data structures remain well-defined, leveraging static type checking.
+
+###### 4. Security
+
+DTOs prevent overexposing database models by controlling which data fields are exposed externally.
+
+---
+
+#### Implementing DTOs in Node.js with TypeScript
+
+###### Basic Example Using TypeScript
+
+```
+// DTO definition
+class UserDTO {
+    constructor(
+        public id: string,
+        public name: string,
+        public email: string
+    ) {}
+}
+
+// Example usage in a service
+class UserService {
+    getUser(): UserDTO {
+        const user = { id: "1", name: "John Doe", email: "john@example.com", password: "secure" }; // Original user model
+        return new UserDTO(user.id, user.name, user.email); // Prevent exposing password
+    }
+}
+
+const service = new UserService();
+console.log(service.getUser());
+```
+
+✅ Benefits: Prevents exposing sensitive information like passwords.
+
+---
+
+#### Using Mappers for DTO Transformation
+
+DTO mappers help convert between domain models and DTOs while ensuring transformations remain consistent and maintainable.
+
+Example: Using a Mapper Function
+
+```typescript
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+}
+
+class UserDTO {
+    constructor(public id: string, public name: string, public email: string) {}
+}
+
+// Mapper function
+const toUserDTO = (user: User): UserDTO => new UserDTO(user.id, user.name, user.email);
+
+// Usage
+const user: User = { id: "1", name: "Alice", email: "alice@example.com", password: "supersecret" };
+const userDTO = toUserDTO(user);
+console.log(userDTO);
+```
+
+✅ Benefits:
+
+- Decouples DTO transformation logic from business logic.
+
+- Enables easy testing and maintenance.
+
+---
+
+#### Advanced Use Cases
+
+###### 1. Using DTOs with Express.js and Class-Transformer
+
+```
+import express from 'express';
+import { plainToInstance } from 'class-transformer';
+
+class UserDTO {
+    constructor(public id: string, public name: string, public email: string) {}
+}
+
+const app = express();
+
+app.get('/user', (req, res) => {
+    const user = { id: "1", name: "Alice", email: "alice@example.com", password: "hidden" };
+    const userDTO = plainToInstance(UserDTO, user);
+    res.json(userDTO);
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+```
+
+✅ Benefits:
+
+- Automates conversion of objects to DTOs.
+- Works well with API responses in RESTful applications.
+
+---
+
+###### 2. Using DTOs in NestJS with Validation
+
+NestJS has built-in support for DTOs using **class-validator** and **class-transformer**.
+
+```typescript
+import { IsEmail, IsString } from 'class-validator';
+
+export class CreateUserDTO {
+    @IsString()
+    name: string;
+
+    @IsEmail()
+    email: string;
+}
+```
+
+✅ Benefits:
+
+- Enforces validation at the request level.
+- Ensures DTOs follow predefined structures.
+
+---
+
+#### Pros and Cons of DTOs
+
+✅ Pros
+- Improves type safety and maintainability.
+- Reduces data exposure and enhances security.
+- Optimizes API response structure.
+
+❌ Cons
+- Adds extra layers of abstraction.
+- Requires additional code for mapping between models and DTOs.
+
+---
+
+#### When to Use DTOs?
+
+- ✅ Exposing API responses
+- ✅ Microservices communication
+- ❌ Internal database queries
+- ❌ Small-scale applications
+
+#### Conclusion
+
+DTOs and mappers help maintain a clean separation between business logic and data representation. While they introduce some overhead, they are crucial in scalable applications, particularly in APIs, microservices, and distributed systems. By integrating DTOs with libraries like class-transformer and class-validator, developers can ensure consistency, type safety, and data security in their applications.
+
+

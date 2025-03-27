@@ -1,0 +1,100 @@
+---
+title: Binary Search in 4 Minutes
+description: Binary search is a search algorithm that finds the position of a target value within a sorted array. Binary search compares the target value to the middle element of the array. If they are not equal, the half in which the target cannot lie is eliminated and the search continues on the remaining half, again taking the middle element to compare to the target value, and repeating this until the target value is found. If the search ends with the remaining half being empty, the target is not in the array.
+date: "2024-07-18"
+url: https://upstash.com/qstash
+repository: upstash/sdk-qstash-ts
+published: true
+tags: ["sci-fi", "gaming", "review"]
+---
+
+
+## Understanding Binary Search
+
+Binary search is a search algorithm that finds the position of a target value within a sorted array. Instead of checking each element one by one (like linear search), it repeatedly divides the search range in half until the target is found or the range is empty.
+
+---
+
+### How Binary Search Works
+
+- **Find the middle element of the array.**
+
+- **Compare it with the target value:**
+    If they match, return the index.
+    If the target is smaller, search the left half.
+    If the target is larger, search the right half.
+
+- **Repeat the process until the element is found or the search range becomes empty.**
+
+#### Time Complexity:
+ O(log n), making it much faster than O(n) linear search for large datasets.
+
+---
+
+## Binary Search Implementation in JavaScript
+
+### Iterative Approach
+
+```typescript
+function binarySearchIterative(arr: number[], target: number): number {
+    let left = 0, right = arr.length - 1;
+
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+
+    return -1; // Target not found
+}
+```
+
+---
+
+### Recursive Approach
+```typescript
+function binarySearchRecursive(arr: number[], target: number, left = 0, right = arr.length - 1): number {
+    if (left > right) return -1; // Base case not found
+
+    const mid = Math.floor((left + right) / 2);
+
+    if (arr[mid] === target) return mid;
+    return arr[mid] < target
+        ? binarySearchRecursive(arr, target, mid + 1, right)
+        : binarySearchRecursive(arr, target, left, mid - 1);
+}
+```
+
+---
+
+### Example Usage
+
+```typescript
+const numbers = [1, 3, 5, 7, 9, 11, 13];
+const target = 7;
+
+console.log(binarySearchIterative(numbers, target)); // Output: 3
+console.log(binarySearchRecursive(numbers, target)); // Output: 3
+```
+
+---
+
+### Key Takeaways
+
+- **Binary Search only works on sorted arrays.**
+
+- **It has a time complexity of O(log n), making it efficient for large datasets.**
+
+- **Can be implemented iteratively or recursively.**
+
+### When to Use Binary Search?
+
+- ✔ Searching in large sorted datasets
+- ✔ Optimizing search performance over linear search
+- ✔ Implementing efficient lookup operations in various applications
+
+
+
+
