@@ -9,6 +9,7 @@ const nextConfig = {
 		domains: ["picsum.photos", "via.placeholder.com", "localhost"],
 	},
 	reactStrictMode: false,
+	output: 'standalone',
 };
 
 export default withContentlayer(nextConfig);
