@@ -6,7 +6,7 @@ const nextConfig = {
 		mdxRs: true,
 	},
 	images	: {
-		domains: ["picsum.photos", "via.placeholder.com", "localhost"],
+		domains: ["picsum.photos", "via.placeholder.com", "localhost", "blog.cryptofundshub.tech"],
 	},
 	reactStrictMode: false,
 	output: 'standalone',
