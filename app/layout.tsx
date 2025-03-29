@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     default: "ultimapm.dev",
     template: "%s | ultimapm.dev",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Software engineer",
   openGraph: {
     title: "ultimapm.dev",
     description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+      "Software engineer",
+    url: "https://blog.cryptofundshub.tech/",
+    siteName: "ultimapm.dev",
     images: [
       {
         url: "https://chronark.com/og.png",
