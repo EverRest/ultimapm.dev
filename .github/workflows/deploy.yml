@@ -26,6 +26,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
