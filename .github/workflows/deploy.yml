@@ -26,7 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-
       - name: Build project
         run: pnpm run build
 
@@ -49,7 +48,18 @@ jobs:
           name: build-files
           path: dist/
 
-      - name: Deploy to Server via SSH
+      - name: Deploy files to Server via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "dist/*"
+          target: "/var/www/blog.digio"
+          strip_components: 1
+
+      - name: Restart Server via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -57,9 +67,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-              cd /var/www/blog.digio
-              git pull origin master  
-              pnpm install
-              pnpm run build
-              pm2 restart blog.digio || pm2 start dist/index.js --name blog.digio
-              echo "Deployment completed"
+            cd /var/www/blog.digio
+            pnpm install
+            pm2 restart blog.digio || pm2 start index.js --name blog.digio
+            echo "Deployment completed"
