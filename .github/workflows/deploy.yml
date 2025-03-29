@@ -26,15 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build project
-        run: pnpm run build
-
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -56,9 +47,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-              cd /var/www/blog-app
-              git pull origin master
+              cd /var/www/blog.digio
+              git pull origin master  
               pnpm install
               pnpm run build
-              pm2 restart blog-app || pm2 start dist/index.js --name blog-app
+              pm2 restart blog.digio || pm2 start dist/index.js --name blog.digio
               echo "Deployment completed"
